@@ -21,6 +21,7 @@ namespace taskmanager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IWorkRepository, WorkRepository>();
+            services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
             services.AddControllersWithViews();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connect")));
         }
