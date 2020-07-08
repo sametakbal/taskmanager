@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using taskmanager.Interfaces;
@@ -14,6 +15,20 @@ namespace taskmanager.Infrastructure
             _context = context;
         }
 
+        public async Task Create(Work work)
+        {
+            await _context.Work.AddAsync(work);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+    
+            var work = await _context.Work.FindAsync(id);
+            _context.Work.Remove(work);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Work> GetWorkByIdAsync(int id)
         { 
           return await _context.Work.FindAsync(id);  
@@ -22,6 +37,12 @@ namespace taskmanager.Infrastructure
         public async Task<IReadOnlyList<Work>> GetWorksAsync(int userId)
         {
             return await _context.Work.ToListAsync();
+        }
+
+        public async Task Update(Work work)
+        {
+            _context.Work.Update(work);
+            await _context.SaveChangesAsync();
         }
     }
 }

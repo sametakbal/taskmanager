@@ -19,6 +19,7 @@ _UpgradeReport_Files/
 ###############
 # Directories #
 ###############
+.vs/
 .vscode/
 bin/
 obj/

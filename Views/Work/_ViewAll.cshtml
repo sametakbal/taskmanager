@@ -1,0 +1,39 @@
+﻿@model IEnumerable<taskmanager.Models.Work>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">GoalTime</th>
+            <th>
+                <a onclick="showInModal('@Url.Action("AddOrEdit", "Work", null, Context.Request.Scheme)' , 'New Work')" class="btn btn-outline-primary"><i class="fa fa-plus"></i>  Create Work</a>
+            </th>
+            <th>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                <a onclick="showInModal('@Url.Action("AddOrEdit", "Work", new {id = item.Id } , Context.Request.Scheme)' , ' Update Work')" class="btn btn-outline-primary"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+                <td>
+                    <form asp-action="Delete" method="POST" asp-route-id="@item.Id" onsubmit="return ajaxDelete(this);">
+                        <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

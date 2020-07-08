@@ -48,7 +48,7 @@ namespace taskmanager
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Work}/{action=Index}/{id?}");
             });
         }
     }

@@ -8,6 +8,12 @@ namespace taskmanager.Interfaces
     {
         Task<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> ListAllAsync();
+
+        Task Create(T entity);
+
+        Task Delete (T entity);
+
+        Task Update (T entity);
         
     }
 }

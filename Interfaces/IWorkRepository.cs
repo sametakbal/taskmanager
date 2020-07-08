@@ -10,5 +10,10 @@ namespace taskmanager.Interfaces
 
          Task<IReadOnlyList<Work>> GetWorksAsync(int id);
 
+        Task Create(Work work);
+
+        Task Delete (int id);
+
+        Task Update (Work work);
     }
 }

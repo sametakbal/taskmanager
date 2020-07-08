@@ -14,6 +14,18 @@ namespace taskmanager.Infrastructure
             _context = context;
         }
 
+        public async Task Create(T entity)
+        {
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(T entity)
+        {
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
@@ -22,6 +34,12 @@ namespace taskmanager.Infrastructure
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {
              return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task Update(T entity)
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }
