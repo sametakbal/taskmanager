@@ -25,6 +25,7 @@ AjaxPost = form => {
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
                     $('#form-modal').modal('hide');
+                    $.notify("Work created", "success");
                 } else {
                     $('#form-modal .modal-body').html(res.html);
                 }
@@ -51,6 +52,7 @@ ajaxDelete = form => {
                 processData: false,
                 success: function(res) {
                     $('#view-all').html(res.html);
+                    $.notify("Deleted sucessfully", "success");
                 },
                 error: function(err) {
                     console.log(err)

@@ -18,6 +18,7 @@ namespace taskmanager.Controllers
             return View(await _repo.GetWorksAsync(0));
         }
 
+        [NoDirectAccess]
         public async Task<IActionResult> AddOrEdit(int? id)
         {
             if (id.HasValue)
