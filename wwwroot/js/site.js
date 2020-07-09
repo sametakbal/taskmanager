@@ -1,4 +1,13 @@
-﻿showInModal = (url, title) => {
+﻿$(function() {
+    $('#spinner').hide();
+    $(document).bind('ajaxStart', function() {
+        $('#spinner').show();
+    }).bind('ajaxStop', function() {
+        $('#spinner').hide();
+    });
+});
+
+showInModal = (url, title) => {
     $.ajax({
         type: "GET",
         url: url,
@@ -12,6 +21,7 @@
 }
 
 AjaxPost = form => {
+
     try {
         $.ajax({
             type: 'POST',
