@@ -76,3 +76,51 @@ ajaxDelete = form => {
     //prevent default form submit event
     return false;
 }
+
+ajaxRegister = form => {
+    var password = document.getElementById("pass").value;
+    var confirm = document.getElementById("pass-confirm").value;
+    if (password !== confirm) {
+        swal("Error!", "Passwords not equal!", "error");
+        return false;
+    }
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function(res) {},
+            error: function(err) {
+                console.log(err);
+            }
+        })
+    } catch (e) {
+        console.log(e);
+    }
+
+    return false;
+}
+
+ajaxLogin = form => {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                swal("Error!", "Username or email wrong!", "error");
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
+    } catch (e) {
+        console.log(e);
+    }
+
+    return false;
+}

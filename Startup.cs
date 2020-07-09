@@ -20,7 +20,10 @@ namespace taskmanager
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
+            services.AddDistributedMemoryCache();
             services.AddScoped<IWorkRepository, WorkRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
             services.AddControllersWithViews();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connect")));
@@ -44,11 +47,13 @@ namespace taskmanager
 
             app.UseAuthorization();
 
+            app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Work}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Index}/{id?}");
             });
         }
     }
