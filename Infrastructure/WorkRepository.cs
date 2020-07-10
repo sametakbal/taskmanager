@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +37,11 @@ namespace taskmanager.Infrastructure
 
         public async Task<IReadOnlyList<Work>> GetWorksAsync(int userId)
         {
-            return await _context.Work.ToListAsync();
+            List<Work> list =  await _context.Work.Where(w => _context.UserWorks
+            .Where(e => e.UserId == userId)
+            .Select(c => c.WorkId)
+            .Contains(w.Id)).ToListAsync();
+            return list;
         }
 
         public async Task Update(Work work)

@@ -112,7 +112,12 @@ ajaxLogin = form => {
             contentType: false,
             processData: false,
             success: function(res) {
-                swal("Error!", "Username or email wrong!", "error");
+                console.log(res.login);
+                if (res.loginerror) {
+                    swal("Error!", "Username or email wrong!", "error");
+                } else {
+                    window.location.assign("/Work/Index");
+                }
             },
             error: function(err) {
                 console.log(err);

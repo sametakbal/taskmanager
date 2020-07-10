@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using taskmanager.Filters;
 using taskmanager.Interfaces;
 using taskmanager.Models;
 
 namespace taskmanager.Controllers
 {
+    [UserFilter]
     public class WorkController : Controller
     {
         private readonly IWorkRepository _repo;

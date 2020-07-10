@@ -18,6 +18,10 @@ namespace taskmanager.Controllers
 
         public IActionResult Index()
         {
+            int? userId =HttpContext.Session.GetInt32("id");
+            if(userId.HasValue){
+                return Redirect("/Work/Index");
+            }
             return View();
         }
         public IActionResult Register()
@@ -30,10 +34,11 @@ namespace taskmanager.Controllers
             var user = await _userRepo.GetUserByEmailAndPassword(email, password);
             if (user == null)
             {
-                return Json(false);
+                return Json(new { loginerror = true });
             }
+
             HttpContext.Session.SetInt32("id", user.Id);
-            return Redirect("/Work/Index");
+            return Json(new { loginerror = false });
         }
 
         [HttpPost]
@@ -41,6 +46,11 @@ namespace taskmanager.Controllers
         {
             await _userRepo.Create(user);
             return Redirect("/Account/Index");
+        }
+
+        public IActionResult Logout(){
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
         }
 
 
