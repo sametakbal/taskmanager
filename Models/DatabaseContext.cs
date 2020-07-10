@@ -16,6 +16,5 @@ namespace taskmanager.Models
     }
         public DbSet<Work> Work {get;set;}
         public DbSet<User> User {get;set;}
-        public DbSet<UserWorks> UserWorks {get;set;}
     }
 }

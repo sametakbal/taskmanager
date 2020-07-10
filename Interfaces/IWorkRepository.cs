@@ -9,6 +9,8 @@ namespace taskmanager.Interfaces
          Task<Work> GetWorkByIdAsync(int id);
 
          Task<IReadOnlyList<Work>> GetWorksAsync(int id);
+         Task<IReadOnlyList<Work>> GetMonthWorksAsync(int id);
+         Task<IReadOnlyList<Work>> GetYearWorksAsync(int id);
 
         Task Create(Work work);
 

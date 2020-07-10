@@ -15,5 +15,9 @@ namespace taskmanager.Models
         [Required(ErrorMessage="This field is required.")]
         [DataType(DataType.Date)]
         public DateTime? GoalTime { get; set; }
+
+        public User User { get; set; }
+
+        public int UserId { get; set; }
     }
 }

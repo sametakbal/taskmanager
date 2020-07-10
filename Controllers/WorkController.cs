@@ -2,7 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using taskmanager.Filters;
 using taskmanager.Interfaces;
+using Microsoft.AspNetCore.Http;
 using taskmanager.Models;
+using System;
 
 namespace taskmanager.Controllers
 {
@@ -17,7 +19,15 @@ namespace taskmanager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _repo.GetWorksAsync(0));
+            return View(await _repo.GetWorksAsync(HttpContext.Session.GetInt32("id").Value));
+        }
+        public async Task<IActionResult> Month()
+        {
+            return View(await _repo.GetMonthWorksAsync(HttpContext.Session.GetInt32("id").Value));
+        }
+        public async Task<IActionResult> Year()
+        {
+            return View(await _repo.GetYearWorksAsync(HttpContext.Session.GetInt32("id").Value));
         }
 
         [NoDirectAccess]
@@ -35,21 +45,39 @@ namespace taskmanager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save(Work work){
-            if(ModelState.IsValid){
-                if(work.Id == 0){
+        public async Task<IActionResult> Save(Work work)
+        {
+            if (ModelState.IsValid)
+            {
+                if (work.Id == 0)
+                {
+                    work.UserId = HttpContext.Session.GetInt32("id").Value;
                     await _repo.Create(work);
-                }else {
+                }
+                else
+                {
                     await _repo.Update(work);
                 }
             }
-            return Json(new {isValid=true, html = Helper.RenderRazorViewToString(this,"_ViewAll",await _repo.GetWorksAsync(1))});
+            DateTime today = DateTime.Now;
+
+            if (work.GoalTime <= today.AddDays(7))
+            {
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _repo.GetWorksAsync(HttpContext.Session.GetInt32("id").Value)) });
+            }
+            else if (work.GoalTime <= today.AddMonths(1))
+            {
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _repo.GetMonthWorksAsync(HttpContext.Session.GetInt32("id").Value)) });
+            }
+
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _repo.GetYearWorksAsync(HttpContext.Session.GetInt32("id").Value)) });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id){
+        public async Task<IActionResult> Delete(int id)
+        {
             await _repo.Delete(id);
-            return Json(new {html = Helper.RenderRazorViewToString(this,"_ViewAll",await _repo.GetWorksAsync(1))});
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _repo.GetWorksAsync(HttpContext.Session.GetInt32("id").Value)) });
         }
     }
 }

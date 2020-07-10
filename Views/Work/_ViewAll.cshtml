@@ -7,7 +7,8 @@
     <thead>
         <tr>
             <th scope="col">Title</th>
-            <th scope="col">GoalTime</th>
+            <th scope="col">Description</th>
+            <th scope="col">Goal Time</th>
             <th>
                 <a onclick="showInModal('@Url.Action("AddOrEdit", "Work", null, Context.Request.Scheme)' , 'New Work')" class="btn btn-info"><i class="fa fa-plus"></i>  Add Work</a>
             </th>
@@ -22,6 +23,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GoalTime)
                 </td>
                 <td>
                 <a onclick="showInModal('@Url.Action("AddOrEdit", "Work", new {id = item.Id } , Context.Request.Scheme)' , ' Update Work')" class="btn btn-secondary"><i style="color: white;" class="fa fa-pencil-square-o"></i></a>

@@ -30,6 +30,13 @@ namespace taskmanager.Infrastructure
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IReadOnlyList<Work>> GetMonthWorksAsync(int id)
+        {
+            DateTime today = DateTime.Now;
+            List<Work> list =  await _context.Work.Where(w => w.UserId == id && (today <= w.GoalTime && today.AddMonths(1) >= w.GoalTime)).ToListAsync();
+            return list;
+        }
+
         public async Task<Work> GetWorkByIdAsync(int id)
         { 
           return await _context.Work.FindAsync(id);  
@@ -37,10 +44,15 @@ namespace taskmanager.Infrastructure
 
         public async Task<IReadOnlyList<Work>> GetWorksAsync(int userId)
         {
-            List<Work> list =  await _context.Work.Where(w => _context.UserWorks
-            .Where(e => e.UserId == userId)
-            .Select(c => c.WorkId)
-            .Contains(w.Id)).ToListAsync();
+            DateTime today = DateTime.Now;
+            List<Work> list =  await _context.Work.Where(w => w.UserId == userId && (today <= w.GoalTime && today.AddDays(7) >= w.GoalTime)).ToListAsync();
+            return list;
+        }
+
+        public async Task<IReadOnlyList<Work>> GetYearWorksAsync(int id)
+        {
+            DateTime today = DateTime.Now;
+            List<Work> list =  await _context.Work.Where(w => w.UserId == id && (today <= w.GoalTime && today.AddYears(1) >= w.GoalTime)).ToListAsync();
             return list;
         }
 

@@ -6,6 +6,7 @@
         <form asp-action="Save" onsubmit="return AjaxPost(this)" autocomplete="off">
             <div asp-validation-summary="ModelOnly"></div>
             <input type="hidden" asp-for="Id">
+            <input type="hidden" asp-for="UserId">
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" type="text" class="form-control">
