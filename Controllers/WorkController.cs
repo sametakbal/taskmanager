@@ -29,6 +29,15 @@ namespace taskmanager.Controllers
         {
             return View(await _repo.GetYearWorksAsync(HttpContext.Session.GetInt32("id").Value));
         }
+        public async Task<IActionResult> AllTime()
+        {
+            return View(await _repo.GetAllTimeWorksAsync(HttpContext.Session.GetInt32("id").Value));
+        }
+
+        public async Task<IActionResult> Done()
+        {
+            return View(await _repo.GetAllTimeDonedWorksAsync(HttpContext.Session.GetInt32("id").Value));
+        }
 
         [NoDirectAccess]
         public async Task<IActionResult> AddOrEdit(int? id)
@@ -42,6 +51,15 @@ namespace taskmanager.Controllers
                 }
             }
             return View(new Work());
+        }
+        public IActionResult Statistics()
+        {
+            return View();
+        }
+        public IActionResult Chart()
+        {
+            var result = _repo.GetStatistics(HttpContext.Session.GetInt32("id").Value);
+            return Json(result);
         }
 
         [HttpPost]
@@ -77,6 +95,12 @@ namespace taskmanager.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _repo.Delete(id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _repo.GetWorksAsync(HttpContext.Session.GetInt32("id").Value)) });
+        }
+        [HttpPost]
+        public async Task<IActionResult> Done(int id)
+        {
+            await _repo.Done(id);
             return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _repo.GetWorksAsync(HttpContext.Session.GetInt32("id").Value)) });
         }
     }

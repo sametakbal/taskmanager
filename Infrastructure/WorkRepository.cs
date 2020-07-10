@@ -24,35 +24,66 @@ namespace taskmanager.Infrastructure
 
         public async Task Delete(int id)
         {
-    
+
             var work = await _context.Work.FindAsync(id);
             _context.Work.Remove(work);
             await _context.SaveChangesAsync();
         }
 
+        public async Task Done(int id)
+        {
+            var work = await _context.Work.FindAsync(id);
+            work.IsDone = !work.IsDone;
+            _context.Update(work);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IReadOnlyList<Work>> GetAllTimeDonedWorksAsync(int id)
+        {
+            return await _context.Work.Where(w => w.UserId == id && w.IsDone).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Work>> GetAllTimeWorksAsync(int id)
+        {
+            return await _context.Work.Where(w => w.UserId == id && !w.IsDone).ToListAsync();
+        }
+
         public async Task<IReadOnlyList<Work>> GetMonthWorksAsync(int id)
         {
             DateTime today = DateTime.Now;
-            List<Work> list =  await _context.Work.Where(w => w.UserId == id && (today <= w.GoalTime && today.AddMonths(1) >= w.GoalTime)).ToListAsync();
+            List<Work> list = await _context.Work.Where(w => w.UserId == id && (today <= w.GoalTime && today.AddMonths(1) >= w.GoalTime)).ToListAsync();
             return list;
         }
 
+        public IEnumerable<FinishedWorks> GetStatistics(int id)
+        {
+            DateTime[] week = Enumerable.Range(0, 10).Select(s => DateTime.Now.AddDays(-1 * s)).ToArray();
+            var result = (from d in week
+                          select new FinishedWorks
+                          {
+                              Day = d.ToString("dd.MM.yyyy"),
+                              Count = _context.Work.Where(w => w.IsDone && w.GoalTime.Value.Date == d.Date && w.UserId == id).Count()
+                          });
+
+            return result.Reverse();
+        }
+
         public async Task<Work> GetWorkByIdAsync(int id)
-        { 
-          return await _context.Work.FindAsync(id);  
+        {
+            return await _context.Work.FindAsync(id);
         }
 
         public async Task<IReadOnlyList<Work>> GetWorksAsync(int userId)
         {
             DateTime today = DateTime.Now;
-            List<Work> list =  await _context.Work.Where(w => w.UserId == userId && (today <= w.GoalTime && today.AddDays(7) >= w.GoalTime)).ToListAsync();
+            List<Work> list = await _context.Work.Where(w => w.UserId == userId && (today <= w.GoalTime && today.AddDays(7) >= w.GoalTime) && !w.IsDone).ToListAsync();
             return list;
         }
 
         public async Task<IReadOnlyList<Work>> GetYearWorksAsync(int id)
         {
             DateTime today = DateTime.Now;
-            List<Work> list =  await _context.Work.Where(w => w.UserId == id && (today <= w.GoalTime && today.AddYears(1) >= w.GoalTime)).ToListAsync();
+            List<Work> list = await _context.Work.Where(w => w.UserId == id && (today <= w.GoalTime && today.AddYears(1) >= w.GoalTime)).ToListAsync();
             return list;
         }
 

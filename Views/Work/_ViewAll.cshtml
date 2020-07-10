@@ -32,6 +32,9 @@
                     <form asp-action="Delete" method="POST" asp-route-id="@item.Id" onsubmit="return ajaxDelete(this);" class="d-inline">
                         <button type="submit" value="Delete" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
                     </form>
+                    <form asp-action="Done" method="POST" asp-route-id="@item.Id" onsubmit="return ajaxDone(this);" class="d-inline">
+                        <button type="submit" value="Delete" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+                    </form>
                 </td>
             </tr>
         }

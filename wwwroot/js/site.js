@@ -77,6 +77,28 @@ ajaxDelete = form => {
     return false;
 }
 
+ajaxDone = form => {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                $('#view-all').html(res.html);
+                $.notify("Sucessfully", "success");
+            },
+            error: function(err) {
+                console.log(err)
+            }
+        })
+    } catch (ex) {
+        console.log(ex)
+    }
+    return false;
+}
+
 ajaxRegister = form => {
     var password = document.getElementById("pass").value;
     var confirm = document.getElementById("pass-confirm").value;
