@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
@@ -20,7 +22,18 @@ namespace Infrastructure.Data
 
         public async Task<IReadOnlyList<Work>> GetWorkAsync()
         {
-            return await _context.Works.ToListAsync();
+            DateTime today = DateTime.Today; 
+            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddDays(7)).ToListAsync();
+        }
+         public async Task<IReadOnlyList<Work>> GetMonthWorkAsync()
+        {
+            DateTime today = DateTime.Today; 
+            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddMonths(1)).ToListAsync();
+        }
+         public async Task<IReadOnlyList<Work>> GetYearWorkAsync()
+        {
+            DateTime today = DateTime.Today; 
+            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddYears(1)).ToListAsync();
         }
 
         public async Task<bool> AddWorkAsync(Work work)
