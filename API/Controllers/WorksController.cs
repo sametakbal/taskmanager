@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+  //  [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class WorksController : BaseApiController
