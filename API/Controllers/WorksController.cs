@@ -19,7 +19,17 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllWorks()
         {
-            return Ok(await _repo.GetWorkAsync());
+            return Ok(await _repo.GetWorksAsync());
+        }
+        [HttpGet("getMonth")]
+        public async Task<ActionResult> GetAllMonthWorks()
+        {
+            return Ok(await _repo.GetMonthWorksAsync());
+        }
+        [HttpGet("getYear")]
+        public async Task<ActionResult> GetAllYearWorks()
+        {
+            return Ok(await _repo.GetYearWorksAsync());
         }
 
         [HttpGet("{id}")]

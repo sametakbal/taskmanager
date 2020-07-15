@@ -1,0 +1,27 @@
+<div class="container mt-3">
+    <div class="row">
+        <section class="col-3 mt-3">
+            <button class="btn btn-info" routerLink="/">Back to Works</button>
+        </section>
+        <section class="col-9 mt-5">
+            <form #workPost="ngForm" (ngSubmit)="onSubmit(workPost.value)">
+                <div class="form-group">
+                    <label>Title:</label>
+                    <input class="form-control" type="text" [(ngModel)]="work.title" name="title">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea class="form-control" type="text" [(ngModel)]="work.description" name="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Goal Time:</label>
+                    <input type="date" name="goalTime" class="form-control" [(ngModel)]="work.goalTime">
+                </div>
+                <div class="form-group">
+                    <button *ngIf="work.id == 0" type="submit" class="btn btn-primary">Create Work</button>
+                    <button *ngIf="work.id != 0" type="submit" class="btn btn-info">Update Work</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

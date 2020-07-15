@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { IProduct } from './models/work';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +7,8 @@ import { IProduct } from './models/work';
 })
 export class AppComponent implements OnInit {
   title = 'Task Manager';
-  works: IProduct[];
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
-  ngOnInit(): void {
-    this.http.get('https://localhost:5001/api/works').subscribe((response: any) => {
-      this.works = response;
-    }, error => {
-      console.log(error);
-    });
-  }
+  ngOnInit(): void { }
 }
