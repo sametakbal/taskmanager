@@ -70,6 +70,24 @@ namespace API.Controllers
             return Unauthorized();
         }
 
+        [HttpGet("getUser")]
+        public async Task<IActionResult> GetUser(string email) {
+            var user = await _userManager.FindByEmailAsync(email);
+            if ( user == null) {
+                user = await _userManager.FindByNameAsync(email);
+                if (user == null) {
+                    return BadRequest(new {message = "user not found"});
+                }
+            }
+
+            return Ok(new UserDto{
+                Name = user.Name,
+                Surname = user.Surname,
+                Email = user.Email,
+                UserName = user.UserName
+            });
+        }
+
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

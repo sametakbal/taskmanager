@@ -40,4 +40,9 @@ export class WorkService {
     return this.http.delete(this.baseUrl + 'works/delete/' + id, {headers});
   }
 
+  doneWork(id: number) {
+    const  headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get<any>(this.baseUrl + 'works/done/?id=' + id, {headers});
+  }
+
 }

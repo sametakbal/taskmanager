@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +9,8 @@ import { CoreModule } from './core/core.module';
 import { WorkModule } from './work/work.module';
 import { FormsModule } from '@angular/forms';
 import { RegisterModule } from './core/register/register.module';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 
 @NgModule({
   declarations: [
@@ -22,9 +24,10 @@ import { RegisterModule } from './core/register/register.module';
     CoreModule,
     WorkModule,
     FormsModule,
-    RegisterModule
+    RegisterModule,
+    NgxSpinnerModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

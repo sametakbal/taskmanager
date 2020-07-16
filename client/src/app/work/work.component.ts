@@ -42,6 +42,14 @@ export class WorkComponent implements OnInit {
 
   deleteWork(id: number) {
     this.workService.deleteWork(id).subscribe(res => {
+      this.getWorks();
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  doneWork(id: number) {
+    this.workService.doneWork(id).subscribe(res => {
       alert(res);
       this.getWorks();
     });

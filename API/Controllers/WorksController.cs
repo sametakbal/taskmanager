@@ -66,5 +66,11 @@ namespace API.Controllers
         {
             return Ok(await _repo.UpdateWorkAsync(work));
         }
+
+         [HttpGet("done")]
+        public async Task<ActionResult> Done(int id)
+        {
+            return Ok(await _repo.WorkDone(id));
+        }
     }
 }

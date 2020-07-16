@@ -18,7 +18,7 @@ export class WorkCreateComponent implements OnInit {
               private router: Router, private auth: AuthService) { }
 
   ngOnInit(): void {
-    if (!this.auth.loggedIn()){
+    if (!this.auth.loggedIn()) {
       this.router.navigate(['/']);
       }
     this.id = +this.activateRoute.snapshot.paramMap.get('id');
@@ -42,8 +42,8 @@ export class WorkCreateComponent implements OnInit {
     this.workService.addWork(model)
     .subscribe((result) => {
       console.log(result);
+      this.router.navigate(['/']);
     });
-    this.router.navigate(['/']);
   }
 
 }

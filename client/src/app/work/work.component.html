@@ -15,7 +15,7 @@
         </section>
         <section class="col-9 mt-5">
             <button class="btn btn-primary btn-block" routerLink="/work-create">Create Work</button>
-            <table class="table table-bordered table-hover mt-3">
+            <table class="table table-bordered table-hover mt-3" *ngIf="works">
                 <thead>
                     <tr>
                         <th scope="col">Title</th>
@@ -34,7 +34,10 @@
 
                         <td>{{work.description.substring(0,9)}}...</td>
                         <td>{{work.goalTime | date}}</td>
-                        <td><button type="button" (click)="deleteWork(work.id)" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="color: white;"></i></button></td>
+                        <td class="text-center">
+                            <button type="button" (click)="deleteWork(work.id)" class="btn btn-danger mr-2"><i class="fa fa-trash" aria-hidden="true" style="color: white;"></i></button>
+                            <button type="button" (click)="doneWork(work.id)" class="btn btn-success"><i class="fa fa-check" aria-hidden="true" style="color: white;"></i></button>
+                        </td>
                     </tr>
 
             </table>
