@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IWork } from '../shared/models/work';
 import { WorkService } from './work.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'app-work',
@@ -15,9 +17,12 @@ export class WorkComponent implements OnInit {
     {name: 'This Month', value: 'getMonth'},
     {name: 'This Year', value: 'getYear'}
   ];
-  constructor(private workService: WorkService) { }
+  constructor(private workService: WorkService, private router: Router, private auth: AuthService) { }
 
   ngOnInit(): void {
+    if (!this.auth.loggedIn()){
+      this.router.navigate(['/']);
+      }
     this.getWorks();
   }
 

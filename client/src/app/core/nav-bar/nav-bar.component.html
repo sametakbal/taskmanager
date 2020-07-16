@@ -2,6 +2,14 @@
     <h5 class="my-0 mr-md-auto font-weight-normal">Task Manager</h5>
     <nav class="my-2 my-md-0 mr-md-3 text-center">
     </nav>
-    <a class="btn btn-outline-secondary mr-3" href="#">Login</a>
-    <a class="btn btn-outline-info mr-4" href="#">Sign up</a>
+    <ul *ngIf="loggedIn()" class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" (click)="logout()">Sign out</a>
+        </li>
+    </ul>
+    <form *ngIf="!loggedIn()" #loginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()">
+        <input class="form-control form-control-sm mr-sm-2" name="username" type="text" minlength="3" placeholder="Username" [(ngModel)]="model.username" required>
+        <input class="form-control form-control-sm mr-sm-2" name="password" minlength="6" type="password" placeholder="Password" [(ngModel)]="model.password" required>
+        <button [disabled]="loginForm.invalid" class="btn btn-primary btn-sm my-2 my-sm-0" type="submit">Login</button>
+    </form>
 </div>

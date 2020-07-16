@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { WorkModule } from './work/work.module';
 import { FormsModule } from '@angular/forms';
+import { RegisterModule } from './core/register/register.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     CoreModule,
     WorkModule,
-    FormsModule
+    FormsModule,
+    RegisterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

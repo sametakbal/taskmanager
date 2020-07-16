@@ -1,0 +1,29 @@
+<div class="container d-flex mt-4 justify-content-center">
+    <form #registerForm="ngForm" (ngSubmit)="register()">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="Name" [(ngModel)]="user.name" name="name">
+        </div>
+        <div class="form-group">
+            <label>Surname</label>
+            <input type="text" class="form-control" placeholder="Surname" [(ngModel)]="user.surname" name="surname">
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" placeholder="Username" [(ngModel)]="user.username" name="username">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" placeholder="Email" [(ngModel)]="user.email" name="email">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" placeholder="Password" [(ngModel)]="user.password" name="password">
+        </div>
+        <div class="form-group">
+            <label>Password Confirm</label>
+            <input type="password" class="form-control" placeholder="Password Confirm" [(ngModel)]="passConfirm" name="passConfirm">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+    </form>
+</div>

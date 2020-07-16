@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IWork, Work } from 'src/app/shared/models/work';
 import { WorkService } from '../work.service';
+import { AuthService } from 'src/app/core/auth.service';
 
 @Component({
   selector: 'app-work-create',
@@ -13,9 +14,13 @@ export class WorkCreateComponent implements OnInit {
   submitted = false;
   id: number;
 
-  constructor(private workService: WorkService, private activateRoute: ActivatedRoute, private router: Router) { }
+  constructor(private workService: WorkService, private activateRoute: ActivatedRoute,
+              private router: Router, private auth: AuthService) { }
 
   ngOnInit(): void {
+    if (!this.auth.loggedIn()){
+      this.router.navigate(['/']);
+      }
     this.id = +this.activateRoute.snapshot.paramMap.get('id');
     if ( this.id !== 0) {
       this.getWork();
