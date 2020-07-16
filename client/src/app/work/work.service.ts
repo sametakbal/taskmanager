@@ -8,30 +8,36 @@ import { IWork, Work } from '../shared/models/work';
 export class WorkService {
   baseUrl = 'https://localhost:5001/api/';
   headers: HttpHeaders;
+  id: number;
   constructor(private http: HttpClient) {
+    this.id = +localStorage.getItem('id');
    }
 
   getWorks(sort: string) {
     const headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.get<IWork[]>(this.baseUrl + 'works' + '/' + sort, {headers});
+    return this.http.get<IWork[]>(this.baseUrl + 'works' + '/' + sort + '?id=' + this.id, {headers});
   }
 
   addWork(work: Work) {
     const  headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
     if (work.id === 0) {
-     return this.http.post(this.baseUrl + 'works/add', work, {headers});
+    console.log(work);
+    return this.http.post(this.baseUrl + 'works/add', work, {headers});
     } else {
-     return this.http.post(this.baseUrl + 'works/update', work);
+    console.log(work);
+    return this.http.post(this.baseUrl + 'works/update', work, {headers});
     }
 
   }
 
   getWork(id: number) {
-    return this.http.get<IWork>(this.baseUrl + 'works/' + id);
+    const  headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get<IWork>(this.baseUrl + 'works/' + id, {headers});
   }
 
   deleteWork(id: number) {
-    return this.http.delete(this.baseUrl + 'works/delete/' + id);
+    const  headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.delete(this.baseUrl + 'works/delete/' + id, {headers});
   }
 
 }

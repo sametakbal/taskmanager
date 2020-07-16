@@ -26,6 +26,7 @@ export class WorkCreateComponent implements OnInit {
       this.getWork();
     } else {
       this.work.id = 0;
+      this.work.ownerId = +localStorage.getItem('id');
     }
   }
 

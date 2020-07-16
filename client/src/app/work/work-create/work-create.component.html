@@ -6,6 +6,8 @@
         <section class="col-9 mt-5">
             <form #workPost="ngForm" (ngSubmit)="onSubmit(workPost.value)">
                 <div class="form-group">
+                    <input type="hidden" [(ngModel)]="work.id" name="id">
+                    <input type="hidden" [(ngModel)]="work.ownerId" name="ownerId">
                     <label>Title:</label>
                     <input class="form-control" type="text" [(ngModel)]="work.title" name="title">
                 </div>

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-  //  [Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class WorksController : BaseApiController
@@ -19,19 +19,28 @@ namespace API.Controllers
             _repo = repo;
         }
         [HttpGet]
-        public async Task<ActionResult> GetAllWorks()
+        public async Task<ActionResult> GetAllWorks(int? id)
         {
-            return Ok(await _repo.GetWorksAsync());
+             if(!id.HasValue){
+                return BadRequest();
+            }
+            return Ok(await _repo.GetWorksAsync(id.Value));
         }
         [HttpGet("getMonth")]
-        public async Task<ActionResult> GetAllMonthWorks()
+        public async Task<ActionResult> GetAllMonthWorks(int? id)
         {
-            return Ok(await _repo.GetMonthWorksAsync());
+            if(!id.HasValue){
+                return BadRequest();
+            }
+            return Ok(await _repo.GetMonthWorksAsync(id.Value));
         }
         [HttpGet("getYear")]
-        public async Task<ActionResult> GetAllYearWorks()
+        public async Task<ActionResult> GetAllYearWorks(int? id)
         {
-            return Ok(await _repo.GetYearWorksAsync());
+             if(!id.HasValue){
+                return BadRequest();
+            }
+            return Ok(await _repo.GetYearWorksAsync(id.Value));
         }
 
         [HttpGet("{id}")]

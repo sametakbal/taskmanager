@@ -20,7 +20,7 @@ export class WorkComponent implements OnInit {
   constructor(private workService: WorkService, private router: Router, private auth: AuthService) { }
 
   ngOnInit(): void {
-    if (!this.auth.loggedIn()){
+    if (!this.auth.loggedIn()) {
       this.router.navigate(['/']);
       }
     this.getWorks();

@@ -21,6 +21,7 @@ export class AuthService {
         if (response) {
           localStorage.setItem( 'token', response.token);
           this.decodedToken = this.jwtHelper.decodeToken(response.token);
+          localStorage.setItem('id', this.decodedToken.nameid);
           console.log(this.decodedToken);
         }
       })

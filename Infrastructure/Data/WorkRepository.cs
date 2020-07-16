@@ -20,20 +20,20 @@ namespace Infrastructure.Data
             return await _context.Works.FindAsync(id);
         }
 
-        public async Task<IReadOnlyList<Work>> GetWorksAsync()
+        public async Task<IReadOnlyList<Work>> GetWorksAsync(int id)
         {
             DateTime today = DateTime.Today; 
-            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddDays(7)).ToListAsync();
+            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddDays(7) && w.OwnerId == id).ToListAsync();
         }
-         public async Task<IReadOnlyList<Work>> GetMonthWorksAsync()
+         public async Task<IReadOnlyList<Work>> GetMonthWorksAsync(int id)
         {
             DateTime today = DateTime.Today; 
-            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddMonths(1)).ToListAsync();
+            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddMonths(1) && w.OwnerId == id).ToListAsync();
         }
-         public async Task<IReadOnlyList<Work>> GetYearWorksAsync()
+         public async Task<IReadOnlyList<Work>> GetYearWorksAsync(int id)
         {
             DateTime today = DateTime.Today; 
-            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddYears(1)).ToListAsync();
+            return await _context.Works.Where(w => w.GoalTime >=  today && w.GoalTime <= today.AddYears(1) && w.OwnerId == id).ToListAsync();
         }
 
         public async Task<bool> AddWorkAsync(Work work)

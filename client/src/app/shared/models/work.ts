@@ -4,6 +4,8 @@ export interface IWork {
     isDone: boolean;
     goalTime: string;
     id: number;
+    personId: number;
+    ownerId: number;
   }
 
 export class Work {
@@ -12,4 +14,6 @@ export class Work {
     isDone: boolean;
     goalTime: string;
     id: number;
+    personId: number;
+    ownerId: number;
 }

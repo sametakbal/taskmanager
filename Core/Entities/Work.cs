@@ -12,6 +12,6 @@ namespace Core.Entities
         public User Owner { get; set; }
         public int OwnerId { get; set; }
         public User Person { get; set; }
-        public int PersonId { get; set; }
+        public int? PersonId { get; set; }
     }
 }
