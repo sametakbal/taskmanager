@@ -43,11 +43,27 @@ namespace API.Controllers
             return Ok(await _repo.GetYearWorksAsync(id.Value));
         }
 
+        [HttpGet("getDone")]
+        public async Task<ActionResult> GetAllDoneWorks(int? id)
+        {
+             if(!id.HasValue){
+                return BadRequest();
+            }
+            return Ok(await _repo.GetDoneWorksAsync(id.Value));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> GetWork(int id)
         {
             return Ok(await _repo.GetWorksByIdAsync(id));
         }
+
+        [HttpGet("assign")]
+        public async Task<ActionResult> AssignWork(int id, int personid)
+        {
+            return Ok(await _repo.AssignWork(id,personid));
+        }
+
 
         [HttpPost("add")]
         public async Task<ActionResult> AddWork(Work work)

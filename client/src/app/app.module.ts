@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { RegisterModule } from './core/register/register.module';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
+import { AssignedWorksModule } from './assigned-works/assigned-works.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
     WorkModule,
     FormsModule,
     RegisterModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    AssignedWorksModule,
+    CommonModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}],
   bootstrap: [AppComponent]

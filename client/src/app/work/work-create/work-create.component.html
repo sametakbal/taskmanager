@@ -1,5 +1,5 @@
 <div class="container mt-3">
-    <div *ngIf="work" class="row">
+    <div class="row">
         <section class="col-3 mt-3">
             <button class="btn btn-info" routerLink="/">Back to Works</button>
         </section>
@@ -24,10 +24,18 @@
                     <button *ngIf="work.id != 0" type="submit" class="btn btn-info">Update Work</button>
                 </div>
             </form>
-            <form class="form-inline mt-4 mt-md-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm.value)" *ngIf="work.id != 0" class="form-inline mt-4 mt-md-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search" [(ngModel)]="search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
+            <div class="card mt-3" *ngIf="user" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{user.name}} {{user.surname}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{user.userName}}</h6>
+                    <p class="card-text">{{user.email}}</p>
+                    <a (click)="assignWork()" class="btn btn-primary btn-sm">Assign</a>
+                </div>
+            </div>
         </section>
     </div>
 </div>

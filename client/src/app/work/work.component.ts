@@ -15,7 +15,8 @@ export class WorkComponent implements OnInit {
   sortOptions = [
     {name: 'This week', value: ''},
     {name: 'This Month', value: 'getMonth'},
-    {name: 'This Year', value: 'getYear'}
+    {name: 'This Year', value: 'getYear'},
+    {name: 'Done ', value: 'getDone'}
   ];
   constructor(private workService: WorkService, private router: Router, private auth: AuthService) { }
 
@@ -50,7 +51,6 @@ export class WorkComponent implements OnInit {
 
   doneWork(id: number) {
     this.workService.doneWork(id).subscribe(res => {
-      alert(res);
       this.getWorks();
     });
   }

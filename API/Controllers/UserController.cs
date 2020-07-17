@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Dtos;
 using Core.Entities;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,9 +24,11 @@ namespace API.Controllers
         private readonly UserManager<User> _userManager;
         public SignInManager<User> _signInManager { get; set; }
         private readonly IConfiguration _configuration;
+        private readonly DataContext _context;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, DataContext context)
         {
+            _context = context;
             _configuration = configuration;
             _signInManager = signInManager;
             _userManager = userManager;
@@ -71,16 +77,21 @@ namespace API.Controllers
         }
 
         [HttpGet("getUser")]
-        public async Task<IActionResult> GetUser(string email) {
+        public async Task<IActionResult> GetUser(string email)
+        {
             var user = await _userManager.FindByEmailAsync(email);
-            if ( user == null) {
+            if (user == null)
+            {
                 user = await _userManager.FindByNameAsync(email);
-                if (user == null) {
-                    return BadRequest(new {message = "user not found"});
+                if (user == null)
+                {
+                    return BadRequest(new { message = "user not found" });
                 }
             }
 
-            return Ok(new UserDto{
+            return Ok(new UserDto
+            {
+                Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
                 Email = user.Email,
@@ -88,18 +99,41 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("getUsers")]
+        public async Task<IActionResult> GetUsers(int id)
+        {
+            var ids = await _context.Works.Where(w => w.OwnerId == id && w.PersonId.HasValue).Select( p => p.PersonId).ToListAsync();
+
+            List<UserDto> list = new List<UserDto>();
+            foreach (var i in ids)
+            {
+                var tmp = await _context.Users.FindAsync(i);
+                list.Add(
+                    new UserDto{
+                        Name = tmp.Name,
+                        Surname = tmp.Surname,
+                        Email = tmp.Email,
+                        UserName = tmp.UserName
+                    }
+                );
+            }
+
+            return Ok(list);
+        }
+
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Secret").Value);
 
-            var tokenDescriptor = new SecurityTokenDescriptor{
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
                 Subject = new ClaimsIdentity(new Claim[]{
                     new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()),
                     new Claim(ClaimTypes.Name , user.UserName)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

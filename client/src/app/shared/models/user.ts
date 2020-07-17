@@ -1,9 +1,10 @@
 export interface IUser {
+    id: number;
     name: string;
     surname: string;
     email: string;
     password: string;
-    username: string;
+    userName: string;
   }
 
 export class User {

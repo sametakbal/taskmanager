@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IWork, Work } from 'src/app/shared/models/work';
 import { WorkService } from '../work.service';
 import { AuthService } from 'src/app/core/auth.service';
+import { IUser } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-work-create',
@@ -11,6 +12,8 @@ import { AuthService } from 'src/app/core/auth.service';
 })
 export class WorkCreateComponent implements OnInit {
   work = new Work();
+  user: IUser;
+  search: string;
   submitted = false;
   id: number;
 
@@ -38,6 +41,17 @@ export class WorkCreateComponent implements OnInit {
     });
   }
 
+  onSearch(term: string) {
+    this.workService.getUserByEmail(term.search.toString()).subscribe(res => {
+      this.user = res;
+      console.log(res);
+    });
+  }
+  assignWork() {
+    this.workService.assignWork(this.id , this.user.id).subscribe( res => {
+      console.log(res);
+    });
+  }
   onSubmit(model: Work) {
     this.workService.addWork(model)
     .subscribe((result) => {

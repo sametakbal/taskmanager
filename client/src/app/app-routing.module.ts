@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { WorkComponent } from './work/work.component';
 import { WorkCreateComponent } from './work/work-create/work-create.component';
 import { RegisterComponent } from './core/register/register.component';
+import { AssignedWorksComponent } from './assigned-works/assigned-works.component';
 
 
 const routes: Routes = [
@@ -10,6 +11,7 @@ const routes: Routes = [
   {path: 'work', component: WorkComponent},
   {path: 'work-create', component: WorkCreateComponent},
   {path: 'work-create/:id', component: WorkCreateComponent},
+  {path: 'assigned-works', component: AssignedWorksComponent},
   {path: '**', redirectTo: '' , pathMatch: 'full'}
 ];
 

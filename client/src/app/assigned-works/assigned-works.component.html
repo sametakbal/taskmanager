@@ -1,0 +1,27 @@
+<div class="container mt-3">
+    <div class="row">
+        <section class="col-3 mt-3">
+            <a routerLink="/work">Back to Home</a>
+        </section>
+        <section class="col-9 mt-5">
+            <table class="table table-bordered table-hover mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor="let user of users">
+                        <td>{{user.name}}</td>
+                        <td>{{user.surname}}</td>
+                        <td>{{user.email}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

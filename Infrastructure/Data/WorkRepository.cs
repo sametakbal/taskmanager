@@ -78,13 +78,22 @@ namespace Infrastructure.Data
             return await _context.Works.FirstOrDefaultAsync(w => w.OwnerId == ownerId && w.PersonId == personId);
         }
 
-        public async Task<bool> AssignWork(int id, int personId)
+        public async Task<bool> AssignWork(int id, int personid)
         {
             var work = await _context.Works.FindAsync(id);
-            work.PersonId = personId;
+            if (work == null)
+            {
+                return false;
+            }
+            work.PersonId = personid;
             _context.Update(work);
             int res = await _context.SaveChangesAsync();
             return res != 0 ? true : false;
+        }
+
+        public async Task<IReadOnlyList<Work>> GetDoneWorksAsync(int id)
+        {
+            return await _context.Works.Where( w => w.OwnerId == id && w.IsDone).ToListAsync();
         }
     }
 }
