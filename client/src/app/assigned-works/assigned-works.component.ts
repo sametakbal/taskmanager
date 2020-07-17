@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IUser } from '../shared/models/user';
+import { IUser, IBusyUser } from '../shared/models/user';
 import { UserService } from './user.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { UserService } from './user.service';
   styleUrls: ['./assigned-works.component.scss']
 })
 export class AssignedWorksComponent implements OnInit {
-  users: IUser[];
+  users: IBusyUser[];
 
   constructor( private router: Router, private userService: UserService) { }
 

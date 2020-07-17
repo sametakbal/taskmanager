@@ -4,6 +4,7 @@ import { WorkComponent } from './work/work.component';
 import { WorkCreateComponent } from './work/work-create/work-create.component';
 import { RegisterComponent } from './core/register/register.component';
 import { AssignedWorksComponent } from './assigned-works/assigned-works.component';
+import { BusyUserComponent } from './assigned-works/busy-user/busy-user/busy-user.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'work-create', component: WorkCreateComponent},
   {path: 'work-create/:id', component: WorkCreateComponent},
   {path: 'assigned-works', component: AssignedWorksComponent},
+  {path: 'assigned-works/:id', component: BusyUserComponent},
   {path: '**', redirectTo: '' , pathMatch: 'full'}
 ];
 

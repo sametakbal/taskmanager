@@ -16,7 +16,9 @@ export class NavBarComponent implements OnInit {
 
   login() {
     this.auth.login(this.model).subscribe(next => {
-    this.router.navigate(['/work']);
+    this.router.navigate(['/work']).then(() => {
+      window.location.reload();
+    });
     console.log('success');
     }, error => {
       console.log('error');

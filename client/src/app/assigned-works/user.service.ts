@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IUser } from '../shared/models/user';
+import { IUser, IBusyUser, User } from '../shared/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,9 @@ export class UserService {
   }
 
   getUsers() {
-    return this.http.get<IUser[]>(this.baseUrl + 'getUsers' + '/' + '?id=' + this.id);
+    return this.http.get<IBusyUser[]>(this.baseUrl + 'getUsers' + '/' + '?id=' + this.id);
+  }
+  getUser(id: number) {
+    return this.http.get<User>(this.baseUrl + 'getUserById' + '/' + '?id=' + id);
   }
 }

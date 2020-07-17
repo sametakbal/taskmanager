@@ -19,6 +19,11 @@ export class WorkService {
     return this.http.get<IWork[]>(this.baseUrl + 'works' + '/' + sort + '?id=' + this.id, {headers});
   }
 
+  getAssignedWorks(personId: number) {
+    const headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get<IWork[]>(this.baseUrl + 'works' + '/getAssignedWork?id=' + this.id + '&personId=' + personId, {headers});
+  }
+
   addWork(work: Work) {
     const  headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
     if (work.id === 0) {
@@ -53,6 +58,11 @@ export class WorkService {
   assignWork(id: number, personid: number) {
     const headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
     return this.http.get<any>(this.baseUrl + 'works' + '/assign' + '?id=' + id + '&personid=' + personid, {headers});
+  }
+
+  backAssignWork(id: number) {
+    const headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get<any>(this.baseUrl + 'works' + '/backAssign' + '?id=' + id , {headers});
   }
 
 }

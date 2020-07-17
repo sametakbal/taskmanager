@@ -21,7 +21,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllWorks(int? id)
         {
-             if(!id.HasValue){
+            if (!id.HasValue)
+            {
                 return BadRequest();
             }
             return Ok(await _repo.GetWorksAsync(id.Value));
@@ -29,7 +30,8 @@ namespace API.Controllers
         [HttpGet("getMonth")]
         public async Task<ActionResult> GetAllMonthWorks(int? id)
         {
-            if(!id.HasValue){
+            if (!id.HasValue)
+            {
                 return BadRequest();
             }
             return Ok(await _repo.GetMonthWorksAsync(id.Value));
@@ -37,7 +39,8 @@ namespace API.Controllers
         [HttpGet("getYear")]
         public async Task<ActionResult> GetAllYearWorks(int? id)
         {
-             if(!id.HasValue){
+            if (!id.HasValue)
+            {
                 return BadRequest();
             }
             return Ok(await _repo.GetYearWorksAsync(id.Value));
@@ -46,7 +49,8 @@ namespace API.Controllers
         [HttpGet("getDone")]
         public async Task<ActionResult> GetAllDoneWorks(int? id)
         {
-             if(!id.HasValue){
+            if (!id.HasValue)
+            {
                 return BadRequest();
             }
             return Ok(await _repo.GetDoneWorksAsync(id.Value));
@@ -61,9 +65,18 @@ namespace API.Controllers
         [HttpGet("assign")]
         public async Task<ActionResult> AssignWork(int id, int personid)
         {
-            return Ok(await _repo.AssignWork(id,personid));
+            return Ok(await _repo.AssignWork(id, personid));
         }
-
+         [HttpGet("backAssign")]
+        public async Task<ActionResult> BackAssignWork(int id)
+        {
+            return Ok(await _repo.BackAssignWork(id));
+        }
+        [HttpGet("getAssignedWork")]
+        public async Task<ActionResult> GetAssignedWork(int id, int personid)
+        {
+            return Ok(await _repo.GetAssignedWorks(id, personid));
+        }
 
         [HttpPost("add")]
         public async Task<ActionResult> AddWork(Work work)
@@ -83,7 +96,7 @@ namespace API.Controllers
             return Ok(await _repo.UpdateWorkAsync(work));
         }
 
-         [HttpGet("done")]
+        [HttpGet("done")]
         public async Task<ActionResult> Done(int id)
         {
             return Ok(await _repo.WorkDone(id));

@@ -14,3 +14,12 @@ export class User {
     password: string;
     username: string;
   }
+
+export interface IBusyUser {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    userName: string;
+    workCount: number;
+  }

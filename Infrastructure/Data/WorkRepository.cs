@@ -24,17 +24,17 @@ namespace Infrastructure.Data
         public async Task<IReadOnlyList<Work>> GetWorksAsync(int id)
         {
             DateTime today = DateTime.Today;
-            return await _context.Works.Where(w => w.GoalTime >= today && w.GoalTime <= today.AddDays(7) && w.OwnerId == id && !w.IsDone).ToListAsync();
+            return await _context.Works.Where(w => w.GoalTime >= today && w.GoalTime <= today.AddDays(7) && w.OwnerId == id && !w.IsDone && !w.PersonId.HasValue).ToListAsync();
         }
         public async Task<IReadOnlyList<Work>> GetMonthWorksAsync(int id)
         {
             DateTime today = DateTime.Today;
-            return await _context.Works.Where(w => w.GoalTime >= today && w.GoalTime <= today.AddMonths(1) && w.OwnerId == id && !w.IsDone).ToListAsync();
+            return await _context.Works.Where(w => w.GoalTime >= today && w.GoalTime <= today.AddMonths(1) && w.OwnerId == id && !w.IsDone && !w.PersonId.HasValue).ToListAsync();
         }
         public async Task<IReadOnlyList<Work>> GetYearWorksAsync(int id)
         {
             DateTime today = DateTime.Today;
-            return await _context.Works.Where(w => w.GoalTime >= today && w.GoalTime <= today.AddYears(1) && w.OwnerId == id && !w.IsDone).ToListAsync();
+            return await _context.Works.Where(w => w.GoalTime >= today && w.GoalTime <= today.AddYears(1) && w.OwnerId == id && !w.IsDone && !w.PersonId.HasValue).ToListAsync();
         }
 
         public async Task<bool> AddWorkAsync(Work work)
@@ -68,9 +68,9 @@ namespace Infrastructure.Data
             return res != 0 ? true : false;
         }
 
-        public async Task<IReadOnlyList<Work>> GetAssignedWorks(int id)
+        public async Task<IReadOnlyList<Work>> GetAssignedWorks(int id, int personId)
         {
-            return await _context.Works.Where(w => w.OwnerId == id && w.PersonId.HasValue).ToListAsync();
+            return await _context.Works.Where(w => w.OwnerId == id && w.PersonId == personId).ToListAsync();
         }
 
         public async Task<Work> GetAssignedWorkById(int ownerId, int personId)
@@ -94,6 +94,15 @@ namespace Infrastructure.Data
         public async Task<IReadOnlyList<Work>> GetDoneWorksAsync(int id)
         {
             return await _context.Works.Where( w => w.OwnerId == id && w.IsDone).ToListAsync();
+        }
+
+        public async Task<bool> BackAssignWork(int id)
+        {
+            var work = await GetWorksByIdAsync(id);
+            work.PersonId = null;
+            _context.Works.Update(work);
+            int res = await _context.SaveChangesAsync();
+            return res != 0 ? true : false;
         }
     }
 }

@@ -10,15 +10,16 @@
                         <th scope="col">Name</th>
                         <th scope="col">Surname</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Assigned Works</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     <tr *ngFor="let user of users">
-                        <td>{{user.name}}</td>
+                        <td><a routerLink="/assigned-works/{{user.id}}">{{user.name}}</a></td>
                         <td>{{user.surname}}</td>
                         <td>{{user.email}}</td>
-
+                        <td>{{user.workCount}}</td>
                     </tr>
                 </tbody>
             </table>

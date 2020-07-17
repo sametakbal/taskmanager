@@ -98,22 +98,44 @@ namespace API.Controllers
                 UserName = user.UserName
             });
         }
+        [HttpGet("getUserById")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                if (user == null)
+                {
+                    return BadRequest(new { message = "user not found" });
+                }
+            }
 
+            return Ok(new UserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                Email = user.Email,
+                UserName = user.UserName
+            });
+        }
         [HttpGet("getUsers")]
         public async Task<IActionResult> GetUsers(int id)
         {
-            var ids = await _context.Works.Where(w => w.OwnerId == id && w.PersonId.HasValue).Select( p => p.PersonId).ToListAsync();
-
-            List<UserDto> list = new List<UserDto>();
+            List<int?> ids = await _context.Works.Where(w => w.OwnerId == id && w.PersonId.HasValue).Select(p => p.PersonId).Distinct().ToListAsync();
+            List<UserForAssignedWorks> list = new List<UserForAssignedWorks>();
             foreach (var i in ids)
             {
                 var tmp = await _context.Users.FindAsync(i);
                 list.Add(
-                    new UserDto{
+                    new UserForAssignedWorks
+                    {
+                        Id = tmp.Id,
                         Name = tmp.Name,
                         Surname = tmp.Surname,
                         Email = tmp.Email,
-                        UserName = tmp.UserName
+                        UserName = tmp.UserName,
+                        WorkCount = await _context.Works.Where(w => w.OwnerId == id && w.PersonId == i).CountAsync()
                     }
                 );
             }
