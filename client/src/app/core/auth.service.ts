@@ -9,7 +9,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
 
-  baseUrl = 'https://localhost:5001/api/user/';
+  baseUrl = 'https://www.netlabsoft.com/api/user/';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
 

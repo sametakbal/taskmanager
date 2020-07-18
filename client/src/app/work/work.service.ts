@@ -7,7 +7,7 @@ import { IUser } from '../shared/models/user';
   providedIn: 'root'
 })
 export class WorkService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = 'https://www.netlabsoft.com/api/';
   headers: HttpHeaders;
   id: number;
   constructor(private http: HttpClient) {

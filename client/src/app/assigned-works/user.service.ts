@@ -6,7 +6,7 @@ import { IUser, IBusyUser, User } from '../shared/models/user';
   providedIn: 'root'
 })
 export class UserService {
-  baseUrl = 'https://localhost:5001/api/user/';
+  baseUrl = 'https://www.netlabsoft.com/api/user/';
   id: number;
   constructor(private http: HttpClient) {
     this.id = +localStorage.getItem('id');
