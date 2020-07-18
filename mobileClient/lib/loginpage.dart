@@ -1,81 +1,147 @@
+import 'dart:convert';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobileClient/homepage.dart';
+
+Future<void> login(
+    String username, String password, BuildContext context) async {
+  final http.Response res = await http.post(
+    'https://www.netlabsoft.com/api/user/login',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(
+        <String, String>{'username': username, 'password': password}),
+  );
+  Map<String, dynamic> tokenjson = jsonDecode(res.body);
+  String token = tokenjson['token'];
+  if (token == null) {
+    Toast.show("Incorrect login", context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
+  } else {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    // Now you can use your decoded token
+    prefs.setInt('id', int.parse(decodedToken['nameid']));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Home()),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
-  final String title;
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final usernameController = new TextEditingController();
+  final passwordController = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final emailField = TextField(
-      obscureText: true,
+    final emailField = TextFormField(
+      controller: usernameController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter username or email';
+        }
+        return null;
+      },
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          hintText: "Username",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
     );
 
-    final passwordField = TextField(
+    final passwordField = TextFormField(
+      controller: passwordController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter password';
+        }
+        return null;
+      },
       obscureText: true,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
     );
 
     final loginButon = Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
+      borderRadius: BorderRadius.circular(1.0),
       color: Color(0xff01A0C7),
       child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            debugPrint(passwordController.text);
+            login(usernameController.text, passwordController.text, context);
+          }
+        },
         child: Text(
           "Login",
           textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: Center(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 155.0,
-                  child: Image.asset(
-                    "assets/images/logo.png",
-                    fit: BoxFit.contain,
+
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+            body: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 155.0,
+                        child: Image.asset(
+                          "assets/images/logo.png",
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      SizedBox(height: 45.0),
+                      emailField,
+                      SizedBox(height: 25.0),
+                      passwordField,
+                      SizedBox(
+                        height: 35.0,
+                      ),
+                      loginButon,
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 45.0),
-                emailField,
-                SizedBox(height: 25.0),
-                passwordField,
-                SizedBox(
-                  height: 35.0,
-                ),
-                loginButon,
-                SizedBox(
-                  height: 15.0,
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    ));
+        )));
   }
 }
