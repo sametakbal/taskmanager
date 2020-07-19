@@ -67,7 +67,7 @@ namespace API.Controllers
         {
             return Ok(await _repo.AssignWork(id, personid));
         }
-         [HttpGet("backAssign")]
+        [HttpGet("backAssign")]
         public async Task<ActionResult> BackAssignWork(int id)
         {
             return Ok(await _repo.BackAssignWork(id));
@@ -78,22 +78,24 @@ namespace API.Controllers
             return Ok(await _repo.GetAssignedWorks(id, personid));
         }
 
-        [HttpPost("add")]
-        public async Task<ActionResult> AddWork(Work work)
+        [HttpPost("save")]
+        public async Task<ActionResult> SaveWork(Work work)
         {
-            return Ok(await _repo.AddWorkAsync(work));
+            if (work.Id == 0)
+            {
+                return Ok(await _repo.AddWorkAsync(work));
+            }
+            else
+            {
+                return Ok(await _repo.UpdateWorkAsync(work));
+
+            }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpGet("delete/{id}")]
         public async Task<ActionResult> DeleteWork(int id)
         {
             return Ok(await _repo.DeleteWorkAsync(id));
-        }
-
-        [HttpPost("update")]
-        public async Task<ActionResult> UpdateWork(Work work)
-        {
-            return Ok(await _repo.UpdateWorkAsync(work));
         }
 
         [HttpGet("done")]
