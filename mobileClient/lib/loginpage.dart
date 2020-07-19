@@ -26,6 +26,8 @@ Future<void> login(
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     // Now you can use your decoded token
     prefs.setInt('id', int.parse(decodedToken['nameid']));
+    prefs.setString('name',decodedToken['unique_name']);
+    prefs.setString('surname', decodedToken['family_name']);
     prefs.setString('token', token);
     debugPrint(token);
     Navigator.pushReplacement(
