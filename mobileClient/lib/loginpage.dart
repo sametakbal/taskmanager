@@ -26,6 +26,8 @@ Future<void> login(
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     // Now you can use your decoded token
     prefs.setInt('id', int.parse(decodedToken['nameid']));
+    prefs.setString('token', token);
+    debugPrint(token);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => Home()),
@@ -42,6 +44,12 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = new TextEditingController();
   final passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool showSpinner = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void dispose() {
     usernameController.dispose();
@@ -89,7 +97,14 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             debugPrint(passwordController.text);
-            login(usernameController.text, passwordController.text, context);
+            setState(() {
+              showSpinner = true;
+            });
+            login(usernameController.text, passwordController.text, context).then((value) => {
+              setState(() {
+              showSpinner = false;
+            })
+            });
           }
         },
         child: Text(
@@ -100,48 +115,49 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: Scaffold(
-            body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(36.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 155.0,
-                        child: Image.asset(
-                          "assets/images/logo.png",
-                          fit: BoxFit.contain,
-                        ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    showSpinner ?
+                        CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.blue),
+                        )
+                    :  
+                    SizedBox(
+                      height: 155.0,
+                      child: Image.asset(
+                        "assets/images/logo.png",
+                        fit: BoxFit.contain,
                       ),
-                      SizedBox(height: 45.0),
-                      emailField,
-                      SizedBox(height: 25.0),
-                      passwordField,
-                      SizedBox(
-                        height: 35.0,
-                      ),
-                      loginButon,
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 45.0),
+                    emailField,
+                    SizedBox(height: 25.0),
+                    passwordField,
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                    loginButon,
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        )));
+        ),
+      ),
+    );
   }
 }

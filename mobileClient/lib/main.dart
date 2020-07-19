@@ -11,5 +11,11 @@ Future<void> main() async {
   int userid = prefs.getInt('id') ?? 0;
   debugPrint(userid.toString());
 
-  runApp(userid !=0 ? Home() : LoginPage());
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: userid !=0 ? Home() : LoginPage()));
 }
+
