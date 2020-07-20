@@ -26,14 +26,8 @@ export class WorkService {
 
   addWork(work: Work) {
     const  headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    if (work.id === 0) {
     console.log(work);
-    return this.http.post(this.baseUrl + 'works/add', work, {headers});
-    } else {
-    console.log(work);
-    return this.http.post(this.baseUrl + 'works/update', work, {headers});
-    }
-
+    return this.http.post(this.baseUrl + 'works/save', work, {headers});
   }
 
   getWork(id: number) {
@@ -43,7 +37,7 @@ export class WorkService {
 
   deleteWork(id: number) {
     const  headers = new  HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.delete(this.baseUrl + 'works/delete/' + id, {headers});
+    return this.http.get(this.baseUrl + 'works/delete/' + id, {headers});
   }
 
   doneWork(id: number) {

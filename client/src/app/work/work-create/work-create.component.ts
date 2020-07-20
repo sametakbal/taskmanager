@@ -45,11 +45,15 @@ export class WorkCreateComponent implements OnInit {
     this.workService.getUserByEmail(term.search.toString()).subscribe(res => {
       this.user = res;
       console.log(res);
-    });
+    },error => {
+      alert('User Not found');
+    }
+    );
   }
   assignWork() {
     this.workService.assignWork(this.id , this.user.id).subscribe( res => {
       console.log(res);
+      alert('Assigned');
     });
   }
   onSubmit(model: Work) {
@@ -59,5 +63,4 @@ export class WorkCreateComponent implements OnInit {
       this.router.navigate(['/']);
     });
   }
-
 }

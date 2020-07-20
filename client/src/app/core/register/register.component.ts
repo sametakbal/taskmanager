@@ -3,6 +3,7 @@ import { User } from 'src/app/shared/models/user';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { TranslationWidth } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,7 @@ export class RegisterComponent implements OnInit {
   register() {
     if (this.passConfirm === this.user.password) {
         this.auth.register(this.user).subscribe( (response) => {
+          alert('Register succesfull, you can login');
           console.log(response);
         }, error => {
           console.log(error);

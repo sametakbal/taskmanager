@@ -1,16 +1,13 @@
 <div class="container mt-3">
     <div class="row">
         <section class="col-3 mt-3">
-            <h5 class="text-warning ml-3">Sort:</h5>
+            <h5 class="text-dark ml-3">Sort:</h5>
             <select class="custom-select" (change)="onSortSelected($event.target.value)">
                 <option *ngFor="let sort of sortOptions" [value]="sort.value" >{{sort.name}}</option>
             </select>
-            <h5 class="text-warning ml-3">List:</h5>
+            <h5 class="text-dark ml-3 mt-3">List:</h5>
             <ul class="list-group">
                 <li class="list-group-item" routerLink="/assigned-works">Assigned Works</li>
-                <li class="list-group-item">List 2</li>
-                <li class="list-group-item">List 3</li>
-                <li class="list-group-item">List 4</li>
             </ul>
         </section>
         <section class="col-9 mt-5">
