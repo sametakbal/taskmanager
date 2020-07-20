@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobileClient/homepage.dart';
 import 'package:mobileClient/models/work.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,19 +12,30 @@ Future<void> saveWork(Work work) async {
   String token = prefs.getString('token');
   int id = prefs.getInt('id');
   work.ownerId = id;
-   final http.Response response = await http.post('https://www.netlabsoft.com/api/works/add',
-      headers: {HttpHeaders.authorizationHeader: "Bearer $token" , 'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(<String,dynamic>{'title': work.title,'description': work.description,'goalTime':work.goalTime,'id':work.id,'ownerId':work.ownerId}));
-  debugPrint(jsonEncode(<String,dynamic>{'title': work.title,'description': work.description,'goalTime':work.goalTime,'id':work.id,'ownerId':work.ownerId}));
-  debugPrint(response.body); 
+  final http.Response response =
+      await http.post('https://www.netlabsoft.com/api/works/save',
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $token",
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'id': work.id,
+            'title': work.title,
+            'description': work.description,
+            'goalTime': work.goalTime,
+            'ownerId': work.ownerId
+          }));
+  debugPrint(work.id.toString()+'-----------------'+ work.ownerId.toString());
+  debugPrint(response.body);
 }
 
-Future<void> deleteWork(int id) async{
+Future<void> deleteWork(int id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token');
-  final http.Response response = await http.delete('https://www.netlabsoft.com/api/works/delete/$id',
-  headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
-  debugPrint(response.body+'----$id');
+  final http.Response response = await http.get(
+      'https://www.netlabsoft.com/api/works/delete/$id',
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+  debugPrint(response.body + '----$id');
 }
 
 class WorkPage extends StatefulWidget {
@@ -105,14 +117,23 @@ class _WorkPageState extends State<WorkPage> {
     );
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(work.id == 0 ? 'Create Work' : work.title),
         centerTitle: true,
         actions: <Widget>[
+          work.id != 0 ?
           IconButton(
-              icon: Icon(Icons.delete, color: Colors.red,),
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
               onPressed: () {
-                deleteWork(work.id).then((value) => Navigator.pop(context));
-              })
+                deleteWork(work.id).then((value) => Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Home())));
+              }) : Center(),
         ],
       ),
       body: Form(
@@ -144,11 +165,12 @@ class _WorkPageState extends State<WorkPage> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     saveWork(Work(
-                        title: titleController.text,
-                        description: descController.text,
-                        goalTime: goaltimeController.text)).then((value) => {
-                          Navigator.pop(context)
-                        });
+                            id: work.id,
+                            title: titleController.text,
+                            description: descController.text,
+                            goalTime: goaltimeController.text))
+                        .then((value) => Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Home())));
                   }
                 },
                 color: Colors.blueAccent,

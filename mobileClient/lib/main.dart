@@ -9,8 +9,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   int userid = prefs.getInt('id') ?? 0;
-  debugPrint(userid.toString());
-
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

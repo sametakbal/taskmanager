@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
           IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => WorkPage(
@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text(user.name ?? '' + ' ' + user.surname),
+              child: Text(''),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
