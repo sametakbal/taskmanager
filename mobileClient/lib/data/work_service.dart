@@ -52,7 +52,7 @@ class WorkService {
       debugPrint(responseJson.toString());
       return responseJson.map((m) => Work.fromJson(m)).toList();
     }
-    return [];
+    return List<Work>();
   }
 
   static Future<void> deleteWork(int id) async {

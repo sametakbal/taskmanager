@@ -66,4 +66,22 @@ class UserService {
     prefs.clear();
     return true;
   }
+
+  static Future<String> createUser(User user) async {
+    final http.Response response =
+        await http.post('https://www.netlabsoft.com/api/user/register',
+            headers: {'Content-Type': 'application/json; charset=UTF-8'},
+            body: jsonEncode(<String, dynamic>{
+              'userName': user.userName,
+              'email': user.email,
+              'name': user.name,
+              'surname': user.surname,
+              'password': user.password
+            }));
+    debugPrint(response.body.toString());
+    if (response.body.toString() == 'true') {
+      return 'Welcome to Task Manager';
+    }
+    return response.body.toString();
+  }
 }

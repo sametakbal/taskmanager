@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobileClient/data/user_service.dart';
+import 'package:mobileClient/models/user.dart';
+import 'package:toast/toast.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -104,6 +107,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       validator: (val) {
         if (val.isEmpty) {
           return 'Please enter password';
+        } else if (val != passwordController.text) {
+          return 'Passwords are not equal!';
         }
         return null;
       },
@@ -121,7 +126,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          if (_formKey.currentState.validate()) {}
+          if (_formKey.currentState.validate()) {
+            UserService.createUser(User(
+                    name: nameController.text,
+                    surname: surnameController.text,
+                    email: emailController.text,
+                    userName: usernameController.text,
+                    password: passwordController.text))
+                .then((value) {
+              debugPrint(value.length.toString());
+              if (value.length == 23) {
+                Toast.show(value, context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                Navigator.pop(context);
+              } else {
+                Toast.show(value, context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+              }
+            });
+          }
         },
         child: Text(
           "Register",
