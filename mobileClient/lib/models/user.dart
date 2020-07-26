@@ -4,10 +4,11 @@ class User {
   String surname;
   String email;
   String userName;
-  Null password;
+  String password;
+  String token;
 
   User(
-      {this.id,
+      {this.id = 0,
       this.name,
       this.surname,
       this.email,

@@ -1,0 +1,172 @@
+import 'package:flutter/material.dart';
+
+class RegisterScreen extends StatefulWidget {
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final nameController = new TextEditingController();
+  final surnameController = new TextEditingController();
+  final emailController = new TextEditingController();
+  final usernameController = new TextEditingController();
+  final passwordController = new TextEditingController();
+  final passwordConfirmController = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(36.0),
+            child: buildForm(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  buildForm() {
+    final nameField = TextFormField(
+      controller: nameController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter your name!';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          icon: Icon(Icons.person),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Name",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
+    );
+    final surnameField = TextFormField(
+      controller: surnameController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter surname!';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          icon: Icon(Icons.person),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Surname",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
+    );
+    final emailField = TextFormField(
+      controller: emailController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter email';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          icon: Icon(Icons.email),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Email",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
+    );
+    final usernameField = TextFormField(
+      controller: usernameController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter username';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          icon: Icon(Icons.person_pin),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Username",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
+    );
+    final passwordField = TextFormField(
+      controller: passwordController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter password';
+        }
+        return null;
+      },
+      obscureText: true,
+      decoration: InputDecoration(
+          icon: Icon(Icons.lock),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Password",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
+    );
+    final passwordConfirmField = TextFormField(
+      controller: passwordConfirmController,
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Please enter password';
+        }
+        return null;
+      },
+      obscureText: true,
+      decoration: InputDecoration(
+          icon: Icon(Icons.lock_outline),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Password",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
+    );
+    final registerButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(1.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          if (_formKey.currentState.validate()) {}
+        },
+        child: Text(
+          "Register",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          nameField,
+          SizedBox(
+            height: 10,
+          ),
+          surnameField,
+          SizedBox(
+            height: 10,
+          ),
+          emailField,
+          SizedBox(
+            height: 10,
+          ),
+          usernameField,
+          SizedBox(
+            height: 10,
+          ),
+          passwordField,
+          SizedBox(
+            height: 10,
+          ),
+          passwordConfirmField,
+          SizedBox(
+            height: 10,
+          ),
+          registerButton
+        ],
+      ),
+    );
+  }
+}

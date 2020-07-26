@@ -1,19 +1,23 @@
-//import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:mobileClient/homepage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobileClient/data/user_service.dart';
+import 'package:mobileClient/screens/work/work_list_screen.dart';
 
-import 'loginpage.dart';
+import 'screens/user/loginpage.dart';
+import 'models/user.dart';
 
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  int userid = prefs.getInt('id') ?? 0;
-  runApp(MaterialApp(
+  UserService.getCurrentUser.then((value) {
+    // ignore: unused_local_variable
+    User user = value;
+
+    //debugPrint(user.name);
+    runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: userid !=0 ? Home() : LoginPage()));
+      home: user != null ? WorkListScreen(user: user) : LoginPage(),
+    ));
+  });
 }
-

@@ -1,40 +1,25 @@
-import 'dart:convert';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:mobileClient/data/user_service.dart';
+import 'package:mobileClient/screens/user/register_screen.dart';
+import 'package:mobileClient/screens/work/work_list_screen.dart';
 import 'package:toast/toast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mobileClient/homepage.dart';
+
+import '../../models/user.dart';
 
 Future<void> login(
     String username, String password, BuildContext context) async {
-  final http.Response res = await http.post(
-    'https://www.netlabsoft.com/api/user/login',
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(
-        <String, String>{'username': username, 'password': password}),
-  );
-  Map<String, dynamic> tokenjson = jsonDecode(res.body);
-  String token = tokenjson['token'];
-  if (token == null) {
-    Toast.show("Incorrect login", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
-  } else {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    // Now you can use your decoded token
-    prefs.setInt('id', int.parse(decodedToken['nameid']));
-    prefs.setString('name',decodedToken['unique_name']);
-    prefs.setString('surname', decodedToken['family_name']);
-    prefs.setString('token', token);
-    debugPrint(token);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => Home()),
-    );
-  }
+  UserService.setCurrentUser(username, password).then((value) {
+    if (value != null) {
+      User user = value;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => WorkListScreen(user: user)),
+      );
+    } else {
+      Toast.show("Incorrect login", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
+    }
+  });
 }
 
 class LoginPage extends StatefulWidget {
@@ -102,11 +87,12 @@ class _LoginPageState extends State<LoginPage> {
             setState(() {
               showSpinner = true;
             });
-            login(usernameController.text, passwordController.text, context).then((value) => {
-              setState(() {
-              showSpinner = false;
-            })
-            });
+            login(usernameController.text, passwordController.text, context)
+                .then((value) => {
+                      setState(() {
+                        showSpinner = false;
+                      })
+                    });
           }
         },
         child: Text(
@@ -121,7 +107,6 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Form(
@@ -130,18 +115,17 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    showSpinner ?
-                        CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(Colors.blue),
-                        )
-                    :  
-                    SizedBox(
-                      height: 155.0,
-                      child: Image.asset(
-                        "assets/images/logo.png",
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                    showSpinner
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.blue),
+                          )
+                        : SizedBox(
+                            height: 155.0,
+                            child: Image.asset(
+                              "assets/images/logo.png",
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                     SizedBox(height: 45.0),
                     emailField,
                     SizedBox(height: 25.0),
@@ -151,8 +135,23 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     loginButon,
                     SizedBox(
-                      height: 15.0,
+                      height: 35.0,
                     ),
+                    InkWell(
+                      child: Text(
+                        "Dont't have an account?",
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen()));
+                      },
+                    )
                   ],
                 ),
               ),
