@@ -85,8 +85,9 @@ class _WorkListScreenState extends State<WorkListScreen> {
                       },
                       child: ListTile(
                         title: Text(work.title),
-                        subtitle:
-                            Text(work.description.substring(0, 7) + '...'),
+                        subtitle: Text(work.description.length > 10
+                            ? work.description.substring(0, 10) + '...'
+                            : work.description + '...'),
                         trailing: Icon(
                           Icons.edit,
                           color: Colors.blue[400],
