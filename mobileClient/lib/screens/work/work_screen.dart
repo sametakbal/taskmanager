@@ -23,8 +23,9 @@ class _WorkScreenState extends State<WorkScreen> {
     super.initState();
     titleController.text = work.title;
     descController.text = work.description;
-    goaltimeController.text =
-        work.goalTime == '' ? DateTime.now().toString() : work.goalTime;
+    goaltimeController.text = work.goalTime == ''
+        ? DateTime.now().toString().replaceAll(' ', 'T')
+        : work.goalTime;
   }
 
   @override
@@ -213,7 +214,8 @@ class _WorkScreenState extends State<WorkScreen> {
   }
 
   void callDatePicker() async {
-    var order = await getDate();
+    var order =
+        await getDate() ?? DateTime.now().toString().replaceAll(' ', 'T');
     setState(() {
       goaltimeController.text = order.toString().replaceAll(' ', 'T');
     });
