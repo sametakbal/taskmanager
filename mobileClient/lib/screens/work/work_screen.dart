@@ -23,7 +23,8 @@ class _WorkScreenState extends State<WorkScreen> {
     super.initState();
     titleController.text = work.title;
     descController.text = work.description;
-    goaltimeController.text = work.goalTime;
+    goaltimeController.text =
+        work.goalTime == '' ? DateTime.now().toString() : work.goalTime;
   }
 
   @override
@@ -74,7 +75,7 @@ class _WorkScreenState extends State<WorkScreen> {
     final descriptionField = TextFormField(
       controller: descController,
       maxLines: 5,
-      maxLength: 55,
+      maxLength: 1000,
       keyboardType: TextInputType.multiline,
       validator: (val) {
         if (val.isEmpty) {
@@ -89,6 +90,7 @@ class _WorkScreenState extends State<WorkScreen> {
     );
     final goaltimeField = TextFormField(
       controller: goaltimeController,
+      enabled: false,
       keyboardType: TextInputType.datetime,
       validator: (val) {
         if (val.isEmpty) {
@@ -124,7 +126,10 @@ class _WorkScreenState extends State<WorkScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: goaltimeField,
+              child: InkWell(
+                child: goaltimeField,
+                onTap: () => callDatePicker(),
+              ),
             ),
             RaisedButton(
               onPressed: () {
@@ -188,5 +193,29 @@ class _WorkScreenState extends State<WorkScreen> {
         );
       },
     );
+  }
+
+  Future<DateTime> getDate() {
+    // Imagine that this function is
+    // more complex and slow.
+    return showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
+    );
+  }
+
+  void callDatePicker() async {
+    var order = await getDate();
+    setState(() {
+      goaltimeController.text = order.toString().replaceAll(' ', 'T');
+    });
   }
 }
