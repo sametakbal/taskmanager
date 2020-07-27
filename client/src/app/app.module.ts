@@ -13,6 +13,7 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 import { AssignedWorksModule } from './assigned-works/assigned-works.module';
 import { CommonModule } from '@angular/common';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CommonModule } from '@angular/common';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
+    MatSliderModule,
     WorkModule,
     FormsModule,
     RegisterModule,
