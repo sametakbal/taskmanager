@@ -55,10 +55,37 @@ class WorkService {
     return List<Work>();
   }
 
+  static Future<List<Work>> getDoneWorks() async {
+    if (id == 0) {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      token = _prefs.getString('token');
+      id = _prefs.getInt('id');
+    }
+    debugPrint(id.toString() + ' id');
+    debugPrint('Work id + token' + token);
+    final response = await http.get(
+      'https://www.netlabsoft.com/api/works/getDone?id=$id',
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
+    if (response.body.isNotEmpty) {
+      final List responseJson = json.decode(response.body);
+      debugPrint(responseJson.toString());
+      return responseJson.map((m) => Work.fromJson(m)).toList();
+    }
+    return List<Work>();
+  }
+
   static Future<void> deleteWork(int id) async {
     final http.Response response = await http.get(
         'https://www.netlabsoft.com/api/works/delete/$id',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
     debugPrint(response.body + '----$id');
+  }
+
+  static Future<String> doneWork(int id) async {
+    final http.Response response = await http.get(
+        'https://www.netlabsoft.com/api/works/done/?id=$id',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    return response.body.toString();
   }
 }

@@ -10,8 +10,6 @@ void main() {
   UserService.getCurrentUser.then((value) {
     // ignore: unused_local_variable
     User user = value;
-
-    //debugPrint(user.name);
     runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

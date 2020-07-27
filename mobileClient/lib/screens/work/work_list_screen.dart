@@ -5,6 +5,7 @@ import 'package:mobileClient/screens/user/loginpage.dart';
 import 'package:mobileClient/models/user.dart';
 import 'package:mobileClient/models/work.dart';
 import 'package:mobileClient/screens/work/work_screen.dart';
+import 'package:toast/toast.dart';
 
 class WorkListScreen extends StatefulWidget {
   final User user;
@@ -16,6 +17,7 @@ class WorkListScreen extends StatefulWidget {
 class _WorkListScreenState extends State<WorkListScreen> {
   Future<List<Work>> workList;
   User user;
+  String sort = '';
   _WorkListScreenState(this.user);
   @override
   void initState() {
@@ -59,43 +61,60 @@ class _WorkListScreenState extends State<WorkListScreen> {
         future: workList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  Work work = snapshot.data[index];
-                  return Card(
-                    margin: EdgeInsets.all(5),
-                    shadowColor: Colors.blue,
-                    child: InkWell(
-                      onTap: () async {
-                        bool res = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WorkScreen(
-                                work: work,
-                              ),
-                            ));
-                        if (res != null) {
-                          if (res) {
-                            setState(() {
-                              workList = WorkService.getWorks('');
-                            });
-                          }
-                        }
-                      },
-                      child: ListTile(
-                        title: Text(work.title),
-                        subtitle: Text(work.description.length > 10
-                            ? work.description.substring(0, 10) + '...'
-                            : work.description + '...'),
-                        trailing: Icon(
-                          Icons.edit,
-                          color: Colors.blue[400],
+            return snapshot.data.length == 0
+                ? Center(
+                    child: Text(
+                    'You have no work yet',
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+                  ))
+                : ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      Work work = snapshot.data[index];
+                      return Card(
+                        margin: EdgeInsets.all(5),
+                        shadowColor: Colors.blue,
+                        child: InkWell(
+                          onTap: () async {
+                            bool res = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WorkScreen(
+                                    work: work,
+                                  ),
+                                ));
+                            if (res != null) {
+                              if (res) {
+                                setState(() {
+                                  workList = WorkService.getWorks('');
+                                });
+                              }
+                            }
+                          },
+                          child: ListTile(
+                              title: Text(work.title),
+                              subtitle: Text(work.description.length > 10
+                                  ? work.description.substring(0, 10) + '...'
+                                  : work.description),
+                              trailing: Checkbox(
+                                  value: work.isDone,
+                                  onChanged: (bool val) {
+                                    setState(() {
+                                      work.isDone = !work.isDone;
+                                      WorkService.doneWork(work.id).then(
+                                          (value) => Toast.show(
+                                              work.isDone
+                                                  ? '${work.title} is done'
+                                                  : '${work.title} taken back',
+                                              context,
+                                              duration: Toast.LENGTH_LONG,
+                                              gravity: Toast.TOP));
+                                    });
+                                  })),
                         ),
-                      ),
-                    ),
-                  );
-                });
+                      );
+                    });
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -141,7 +160,8 @@ class _WorkListScreenState extends State<WorkListScreen> {
             title: Text('This Week'),
             onTap: () {
               setState(() {
-                workList = WorkService.getWorks('');
+                sort = '';
+                workList = WorkService.getWorks(sort);
                 Navigator.of(context).pop();
               });
             },
@@ -151,7 +171,8 @@ class _WorkListScreenState extends State<WorkListScreen> {
             title: Text('This Month'),
             onTap: () {
               setState(() {
-                workList = WorkService.getWorks('getMonth');
+                sort = 'getMonth';
+                workList = WorkService.getWorks(sort);
                 Navigator.of(context).pop();
               });
             },
@@ -161,7 +182,18 @@ class _WorkListScreenState extends State<WorkListScreen> {
             title: Text('This Year'),
             onTap: () {
               setState(() {
-                workList = WorkService.getWorks('getYear');
+                sort = 'getYear';
+                workList = WorkService.getWorks(sort);
+                Navigator.of(context).pop();
+              });
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.check),
+            title: Text('Done Works'),
+            onTap: () {
+              setState(() {
+                workList = WorkService.getDoneWorks();
                 Navigator.of(context).pop();
               });
             },

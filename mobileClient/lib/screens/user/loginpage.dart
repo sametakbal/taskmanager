@@ -72,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
+          focusColor: Colors.blue,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0))),
     );
 
@@ -81,7 +82,9 @@ class _LoginPageState extends State<LoginPage> {
       color: Color(0xff01A0C7),
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
+          debugPrint(MediaQuery.of(context).size.width.toString());
           if (_formKey.currentState.validate()) {
             debugPrint(passwordController.text);
             setState(() {

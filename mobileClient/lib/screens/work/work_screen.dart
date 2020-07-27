@@ -155,11 +155,10 @@ class _WorkScreenState extends State<WorkScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('AlertDialog Title'),
+          title: Text('Delete?'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Delete?'),
                 Text('Are you sure delete this work?'),
               ],
             ),

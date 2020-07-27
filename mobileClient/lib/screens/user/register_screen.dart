@@ -124,6 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       borderRadius: BorderRadius.circular(1.0),
       color: Color(0xff01A0C7),
       child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           if (_formKey.currentState.validate()) {
