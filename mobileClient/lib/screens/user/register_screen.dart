@@ -166,27 +166,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           nameField,
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           surnameField,
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           emailField,
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           usernameField,
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           passwordField,
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           passwordConfirmField,
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           registerButton
         ],

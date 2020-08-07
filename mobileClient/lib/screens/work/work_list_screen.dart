@@ -29,7 +29,7 @@ class _WorkListScreenState extends State<WorkListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Task Manager'),
+        title: Text('Work Manager'),
         centerTitle: true,
       ),
       drawer: buildDrawer(),
