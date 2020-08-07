@@ -36,6 +36,11 @@
                     <a (click)="assignWork()" class="btn btn-primary btn-sm">Assign</a>
                 </div>
             </div>
+            <div class="card mt-3" *ngIf="result" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">User not found.</h5>
+                </div>
+            </div>
         </section>
     </div>
 </div>

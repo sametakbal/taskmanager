@@ -16,6 +16,7 @@ export class WorkCreateComponent implements OnInit {
   search: string;
   submitted = false;
   id: number;
+  result: boolean;
 
   constructor(private workService: WorkService, private activateRoute: ActivatedRoute,
               private router: Router, private auth: AuthService) { }
@@ -27,6 +28,7 @@ export class WorkCreateComponent implements OnInit {
     this.id = +this.activateRoute.snapshot.paramMap.get('id');
     if ( this.id !== 0) {
       this.getWork();
+      this.result = false;
     } else {
       this.work.id = 0;
       this.work.ownerId = +localStorage.getItem('id');
@@ -44,9 +46,11 @@ export class WorkCreateComponent implements OnInit {
   onSearch(term: string) {
     this.workService.getUserByEmail(term.search.toString()).subscribe(res => {
       this.user = res;
+      this.result = false;
       console.log(res);
     },error => {
       alert('User Not found');
+      this.result = true;
     }
     );
   }
