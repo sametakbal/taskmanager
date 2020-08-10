@@ -23,16 +23,16 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    if (this.passConfirm === this.user.password) {
+    if(this.passConfirm === this.user.password){
         this.auth.register(this.user).subscribe( (response) => {
           alert('Register succesfull, you can login');
           console.log(response);
         }, error => {
-          console.log(error);
+          alert(error.error[0].description);
         });
-    } else {
-      alert('Password not equal');
-    }
+      }else {
+        alert('Passwords are not equal!');
+      }
   }
 
 }

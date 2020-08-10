@@ -4,7 +4,7 @@ import { WorkComponent } from './work.component';
 import { RouterModule } from '@angular/router';
 import { WorkCreateComponent } from './work-create/work-create.component';
 import { FormsModule } from '@angular/forms';
-
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -12,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    MatTableModule
   ],
   exports: [WorkComponent]
 })
